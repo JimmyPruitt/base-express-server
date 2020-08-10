@@ -1,0 +1,66 @@
+{
+  "name": "@jimmypruitt/base-express-server",
+  "version": "1.0.0",
+  "main": "dist/app.js",
+  "author": "Jimmy Pruitt",
+  "license": "MIT",
+  "scripts": {
+    "start": "nest start --debug --watch --path=tsconfig.json",
+    "test:dev": "node --inspect -r tsconfig-paths/register -r ts-node/register -r ts-jest ./node_modules/jest/bin/jest.js --runInBand --watchAll",
+    "test:ci": "node -r tsconfig-paths/register -r ts-node/register -r ts-jest ./node_modules/jest/bin/jest.js --runInBand",
+    "test:coverage": "node -r tsconfig-paths/register -r ts-node/register -r ts-jest ./node_modules/jest/bin/jest.js --runInBand --coverage",
+    "lint": "eslint --fix -c node_modules/@jimmypruitt/eslint-config/.eslintrc.node.json .",
+    "prettier": "prettier --write --config node_modules/@jimmypruitt/prettier-config/.prettierrc.json src \"*.{js,ts,json,md}\"",
+    "build": "tsc -p tsconfig.json",
+    "watch": "yarn build --pretty --watch",
+    "migration:create": "db-migrate create migration --sql-file",
+    "migration:up": "db-migrate up",
+    "migration:down": "db-migrate down"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^9.0.1",
+    "@commitlint/config-conventional": "^9.0.1",
+    "@nestjs/testing": "^7.3.2",
+    "@jimmypruitt/eslint-config": "https://github.com/jimmypruitt/eslint-config#v1.0.2",
+    "@jimmypruitt/prettier-config": "https://github.com/jimmypruitt/prettier-config#v1.0.1",
+    "@jimmypruitt/ts-config": "https://github.com/jimmypruitt/ts-config#v0.0.1",
+    "@types/jest": "^26.0.4",
+    "@types/pg": "^7.14.4",
+    "db-migrate": "^0.11.11",
+    "db-migrate-pg": "^1.2.2",
+    "dotenv-cli": "^3.2.0",
+    "husky": "^4.2.5",
+    "jest": "^26.1.0",
+    "lint-staged": "^10.2.11",
+    "ts-jest": "^26.1.1",
+    "ts-node": "^8.10.2",
+    "tsconfig-paths": "^3.9.0"
+  },
+  "dependencies": {
+    "@nestjs/common": "^7.3.2",
+    "@nestjs/core": "^7.3.2",
+    "@nestjs/passport": "^7.1.0",
+    "@nestjs/platform-express": "^7.3.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "passport": "^0.4.1",
+    "pg": "^8.3.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.6.0"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  }
+}

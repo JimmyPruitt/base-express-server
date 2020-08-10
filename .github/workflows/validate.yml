@@ -1,0 +1,33 @@
+name: Validation (CI)
+on:
+  - push
+  - pull_request
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+    
+    steps:
+      - uses: actions/checkout@v2
+        
+      - id: cat-node-version
+        run: cat .nvmrc
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.0
+        with:
+          node-version: ${{ steps.cat-node-version.outputs.text }}
+
+      - name: Installation
+        run: yarn
+
+      - name: Compilation
+        run: yarn build
+
+      - name: Linterization
+        run: yarn lint
+
+      - name: Testification
+        run: yarn test:ci --passWithNoTests
